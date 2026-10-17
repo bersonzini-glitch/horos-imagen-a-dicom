@@ -22,4 +22,16 @@ clang "${FLAGS[@]}" -framework Foundation -framework ImageIO -framework CoreGrap
 
 (cd build && ditto -c -k --keepParent JPEGToDICOMArm.horosplugin JPEGToDICOMArm.horosplugin.zip)
 
+# Installer package: files installed by Installer are not quarantined, so it works
+# for people downloading the plugin without needing Terminal.
+mkdir -p "build/pkgroot/Library/Application Support/Horos/Plugins"
+cp -R "$OUT" "build/pkgroot/Library/Application Support/Horos/Plugins/"
+pkgbuild --analyze --root build/pkgroot build/component.plist >/dev/null
+plutil -replace 0.BundleIsRelocatable -bool NO build/component.plist
+VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Info.plist)
+pkgbuild --root build/pkgroot --component-plist build/component.plist --install-location / \
+  --identifier com.columnaspine.horos.JPEGToDICOMArm --version "$VERSION" build/plugin.pkg >/dev/null
+productbuild --distribution distribution.xml --resources installer --package-path build \
+  "build/Instalar Imagen a DICOM.pkg" >/dev/null
+
 echo "Built $OUT"

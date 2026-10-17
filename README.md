@@ -27,13 +27,21 @@ The original *JPEG to DICOM* plugin from the Horos catalog only ships an Intel (
 
 ### Instalación
 
-1. Descargá `JPEGToDICOMArm.horosplugin.zip` desde [Releases](../../releases) y descomprimilo.
-2. Como el plugin no está notarizado por Apple, quitale la marca de cuarentena en Terminal:
-   ```bash
-   xattr -dr com.apple.quarantine ~/Downloads/JPEGToDICOMArm.horosplugin
-   ```
-3. Copialo a `~/Library/Application Support/Horos/Plugins/` (o hacé doble clic y Horos lo instala).
-4. Reiniciá Horos.
+1. Descargá **`Instalar Imagen a DICOM.pkg`** desde [Releases](../../releases/latest).
+2. Hacé doble clic. Como el instalador no está notarizado por Apple, la Mac puede decir que no puede verificarlo: tocá **OK**, andá a **Ajustes del Sistema → Privacidad y seguridad**, bajá hasta el final y tocá **"Abrir igualmente"**.
+3. Seguí el instalador y, al terminar, cerrá y volvé a abrir Horos.
+
+<details>
+<summary>Instalación manual con el .zip (usuarios avanzados)</summary>
+
+Descomprimí `JPEGToDICOMArm.horosplugin.zip`, quitá la cuarentena y hacé doble clic en el plugin (o copialo a `~/Library/Application Support/Horos/Plugins/`):
+
+```bash
+xattr -dr com.apple.quarantine ~/Downloads/JPEGToDICOMArm.horosplugin
+```
+
+Sin ese paso macOS bloquea la carga del plugin.
+</details>
 
 ### Uso
 
@@ -47,7 +55,7 @@ Solo hacen falta las *Command Line Tools* de Xcode (no Xcode completo):
 
 ```bash
 xcode-select --install   # si no las tenés
-./build.sh               # genera build/JPEGToDICOMArm.horosplugin y el .zip
+./build.sh               # genera el plugin, el .zip y el instalador .pkg en build/
 ```
 
 `build/jpg2dcm_test` es una herramienta de línea de comandos para probar la conversión sin Horos.
@@ -77,13 +85,21 @@ Las imágenes generadas son capturas secundarias (fotos encapsuladas en DICOM) y
 
 ### Install
 
-1. Download `JPEGToDICOMArm.horosplugin.zip` from [Releases](../../releases) and unzip it.
-2. The plugin isn't notarized by Apple, so remove the quarantine flag:
-   ```bash
-   xattr -dr com.apple.quarantine ~/Downloads/JPEGToDICOMArm.horosplugin
-   ```
-3. Copy it into `~/Library/Application Support/Horos/Plugins/` (or double-click it and let Horos install it).
-4. Restart Horos.
+1. Download **`Instalar Imagen a DICOM.pkg`** from [Releases](../../releases/latest).
+2. Double-click it. The installer isn't notarized by Apple, so macOS may say it can't verify it: click **OK**, open **System Settings → Privacy & Security**, scroll down and click **"Open Anyway"**.
+3. Follow the installer, then quit and reopen Horos.
+
+<details>
+<summary>Manual install from the .zip (advanced)</summary>
+
+Unzip `JPEGToDICOMArm.horosplugin.zip`, remove the quarantine flag and double-click the plugin (or copy it into `~/Library/Application Support/Horos/Plugins/`):
+
+```bash
+xattr -dr com.apple.quarantine ~/Downloads/JPEGToDICOMArm.horosplugin
+```
+
+Without this, macOS refuses to load the plugin. The `.pkg` avoids it because files installed by Installer are not quarantined.
+</details>
 
 ### Usage
 
@@ -97,7 +113,7 @@ Only Xcode *Command Line Tools* are needed:
 
 ```bash
 xcode-select --install   # if needed
-./build.sh               # builds build/JPEGToDICOMArm.horosplugin and the .zip
+./build.sh               # builds the plugin, the .zip and the .pkg installer in build/
 ```
 
 The plugin links against the Horos executable with `-bundle_loader` and declares only the minimal `PluginFilter` interface it needs (`PluginFilter.h`); Horos 4 is signed with `disable-library-validation`, so an ad-hoc signature is enough. `build/jpg2dcm_test` is a CLI to test conversion without Horos.
